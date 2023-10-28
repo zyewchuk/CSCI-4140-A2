@@ -3,7 +3,10 @@ const mysql = require('mysql2');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+console.log(process.env.DB_HOST);
+console.log(process.env.DB_USER);
+console.log(process.env.DB_PASSWORD);
+console.log(process.env.DB_NAME);
 app.use(express.json());
 
 const db = mysql.createConnection({

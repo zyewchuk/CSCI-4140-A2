@@ -1,8 +1,4 @@
 // Function to fetch parts data and update the HTML
-console.log(process.env.DB_HOST);
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASSWORD);
-console.log(process.env.DB_NAME);
 function fetchAndDisplayParts545() {
   // Make an HTTP GET request to your /parts endpoint
   fetch('/parts')

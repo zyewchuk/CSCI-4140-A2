@@ -1,0 +1,87 @@
+/* Reset some default styles */
+body, h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Set a background color and font for the whole page */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: lightsteelblue; /* Extend the background color to cover the entire page */
+    color: #4c4a4a;
+  }
+  
+  /* Style the header */
+  header {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  header h1 {
+    font-size: 2.5em;
+  }
+  
+  /* Style the navigation */
+  .navbar ul {
+    list-style-type: none;
+  }
+  
+  .navbar li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  .navbar a {
+    color: #4c4a4a;
+    text-decoration: none;
+  }
+  
+  /* Style the main content area */
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  /* Add hover effect to navigation links */
+  .navbar a:hover {
+    color: #f2f2f2;
+  }
+  
+  /* Add responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .navbar ul {
+      text-align: center;
+      margin-top: 10px;
+    }
+  
+    .navbar li {
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
+  /* Style the "Enter a Part Number" heading */
+header h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Style the input field and button */
+  label[for="part-number"] {
+    margin-right: 10px; /* Add space between label and input field */
+  }
+ /* Style the part information display */
+#part-info {
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 80%;
+    text-align: Center;
+    font-size: 1.2em;
+    color: #333; /* Text color */
+  }
+  
+  
+  
+  
+  

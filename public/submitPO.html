@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Information Form</title>
+    <link rel="stylesheet" href="Styles/submitPOStyles.css"> 
+</head>
+<body>
+    <h1>Client Information Form</h1>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="parts.html">Part Information</a></li>
+            <li><a href="PO.html">PO Information</a></li>
+            <li><a href="lineInfo.html">Line Info</a></li>
+            <li><a href="submitPO.html">Submit a Purchase Order</a></li>
+        </ul>
+    </nav>
+    <form id="client-form">
+        <label for="clientName">Client Name:</label>
+        <input type="text" id="clientName" required><br><br>
+
+        <label for="clientCity">Client City:</label>
+        <input type="text" id="clientCity" required><br><br>
+
+        <input type="button" value="Submit" onclick="generateClientID545()">
+    </form>
+
+    <div id="purchase-order-info" style="display: none;">
+        <h3>Purchase Order Information:</h3>
+        <p>Your Purchase Order Number: <span id="nextPoNumber"></span></p>
+        <p>Your Client ID is: <span id="generatedClientID"></span></p>
+        <p>Current Date: <span id="currentDate"></span></p>
+        <p>Status: <span id="status545">Pending</span></p>
+        <button id="add-products-button" onclick="addProducts()">Add Products</button>
+        <button id="cancel-button" onclick="refreshPage545()">Cancel</button>
+    </div>
+
+    <div id="parts-list" style="display: none;">
+        <select id="part-dropdown">
+            <option value="">Select a Part</option>
+            <!-- Dropdown options will be added here -->
+        </select>
+        <input type="number" id="quantity" placeholder="Quantity">
+        <button type="button" id="add-to-cart">Add to Cart</button>
+    </div>
+
+    <h3>Shopping Cart:</h3>
+    <ul id="cart"></ul>
+
+    <h3>Total Price: <span id="total-price">$0.00</span></h3>
+    <button type="button" id="purchase-button">Purchase</button>
+    <script>
+
+        function fetchNextPoNumber545() {
+            fetch('/next-po-number')
+                .then(response => response.json())
+                .then(data => {
+                    const nextPoNumber = data.nextPoNumber;
+                    document.getElementById('nextPoNumber').textContent = nextPoNumber;
+                })
+                .catch(error => console.error('Error fetching next PO number:', error));
+        }
+        // Call the fetchNextPoNumber function when the page loads
+        window.addEventListener('load', fetchNextPoNumber545);
+        function addProducts() {
+            const partsList = document.getElementById("parts-list");
+            partsList.style.display = "block";
+        }
+
+        function refreshPage545() {
+            window.location.reload();
+        }
+        
+        const usedClientIDs = [];
+       
+        // Function to generate a unique ClientID
+        function generateClientID545() {
+            const clientName = document.getElementById('clientName').value;
+            const clientCity = document.getElementById('clientCity').value;
+
+
+            if (clientName.trim() === '' || clientCity.trim() === '') {
+                alert('Please enter both Client Name and Client City.');
+                return;
+            }
+
+            let clientID;
+            do {
+                clientID = generateUniqueClientID545();
+            } while (isClientIDUsed545(clientID));
+
+            usedClientIDs.push(clientID);
+
+            document.getElementById('generatedClientID').textContent = clientID;
+
+            // Show the purchase order information section
+            document.getElementById('purchase-order-info').style.display = 'block';
+            
+            // Display the current date in "YYYY-MM-DD" format
+            const currentDate = new Date();
+            const formattedDate = currentDate.toISOString().split('T')[0];
+            document.getElementById('currentDate').textContent = formattedDate;
+
+            
+            
+
+            // Call the function to fetch and display parts data
+            fetchAndDisplayParts545();
+
+            fetchNextPoNumber545(); 
+            let lineNo545 = 1; // Initialize with 1, increment as new lines are added
+            // Function to add selected part to the cart
+
+            // Add an event listener to the "Purchase" button
+    
+
+            
+            const clientId545 = clientID;
+            const clientName545 = clientName
+            const clientCity545 = clientCity
+            const moneyOwed545 = "0.00";
+            
+            const poNo545 = document.getElementById('nextPoNumber').textContent;
+                const dateOfPO545 = formattedDate;
+                const clientCompID545 = clientID;
+                let status545 = "Pending";
+
+            
+             //Function to insert data into the Clients545 table
+            function insertClientData545(clientData) {
+                fetch('/insert-client-data', { // Replace '/insert-client-data' with your actual server endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(clientData),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Client data inserted successfully:', data);
+                    // Perform any additional actions or UI updates if needed.
+                })
+                .catch((error) => console.error('Error inserting client data:', error));
+            } 
+        
+            // After setting the clientID, create the clientData object
+            const clientData = {
+                clientId545,
+                clientName545,
+                clientCity545,
+                moneyOwed545,
+            };
+            console.log(clientData);
+            insertClientData545(clientData);  
+
+
+             //Function to insert data into the Clients545 table
+            function insertPOData(POData) {
+                fetch('/insert-PO-data', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(POData),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('POD data inserted successfully:', data);
+                    // Perform any additional actions or UI updates if needed.
+                })
+                .catch((error) => console.error('Error inserting PO data:', error));
+            } 
+         
+                const purchaseButton = document.getElementById('purchase-button'); // Replace 'purchase-button' with the actual ID of your button
+                     purchaseButton.addEventListener('click', () => {
+                // Call the insertPOData function here when the button is clicked
+                        insertPOData(POData);
+                       
+            });
+            
+            
+                const POData = {
+                            poNo545,
+                            clientCompID545,
+                            dateOfPO545,
+                            status545,
+                        };
+                        console.log(POData);
+
+           function addToCart545() {
+    const partDropdown = document.getElementById('part-dropdown');
+    const quantityInput = document.getElementById('quantity');
+    const selectedPartNo = partDropdown.value;
+    const quantity = quantityInput.valueAsNumber;
+
+    if (!selectedPartNo || quantity <= 0) {
+        alert('Please select a part and enter a valid quantity.');
+        return;
+    }
+   
+    // Make an HTTP GET request to retrieve the price for the selected part
+    fetch(`/add-to-cart?partNo=${selectedPartNo}`)
+        .then((response) => response.json())
+        .then((part) => {
+            if (part) {
+                const itemPrice = part.price;
+
+                // Calculate the total price for the item based on the quantity and the retrieved price
+                const totalItemPrice = itemPrice * quantity;
+
+                // Handle the cart item response, e.g., add it to the cart and update the total price
+                const cart = document.getElementById('cart');
+                const totalPrice = document.getElementById('total-price');
+
+                const li = document.createElement('li');
+                li.textContent = `${part.partName545} - Quantity: ${quantity} - $${totalItemPrice.toFixed(2)}`;
+                cart.appendChild(li);
+
+                // Update the total price by parsing the price as a float
+                const currentTotalPrice = parseFloat(totalPrice.textContent.replace('$', ''));
+                totalPrice.textContent = `$${(currentTotalPrice + totalItemPrice).toFixed(2)}`;
+
+                // Now, you can calculate priceOrdered545
+                const priceOrdered545 = itemPrice * quantity;
+
+                // Call the fetchNextPoNumber function when the page loads
+                //window.addEventListener('load', fetchNextPoNumber);
+
+                
+                //const poNo545 = document.getElementById('nextPoNumber').textContent;
+                const partNo545 = selectedPartNo;
+                const qty545 = quantity;
+
+
+                
+                        
+                // Insert the prepared data into the Lines545 table (You will make a server request here)
+                const lineData = {
+                    poNo545,
+                    lineNo545, // Use the stored line number
+                    partNo545,
+                    qty545,
+                    priceOrdered545,
+                };
+              
+                // Function to insert data into the Lines545 table
+                function insertLineData545(lineData) {
+                    fetch('/insert-line-data', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(lineData),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            console.log('Line Data inserted successfully:', data);
+                        })
+                        .catch((error) => console.error('Error inserting data:', error));
+                }
+                        // Call the function to insert data into the Lines545 table
+              //  insertLineData(lineData);
+                    console.log(lineData);
+                // Increment the line number for the next line
+                lineNo545++;
+                const purchaseButton = document.getElementById('purchase-button'); // Replace 'purchase-button' with the actual ID of your button
+
+                purchaseButton.addEventListener('click', () => {
+                    // This code will be executed when the button is clicked
+                    insertLineData545(lineData);
+                    status545 = "Ordered"; // Change the status to "Ordered"
+
+                    // Update the content of the <span> element
+                    document.getElementById('status545').textContent = 'Ordered';
+                });
+
+                
+            }
+        })
+        .catch((error) => console.error('Error adding to cart:', error));
+}
+        
+            // Add an event listener to the "Add to Cart" button
+            const addToCartButton = document.getElementById('add-to-cart');
+            addToCartButton.addEventListener('click', addToCart545);
+        }
+
+        // Function to generate a unique ClientID
+        function generateUniqueClientID545() {
+            const minID = 1000;
+            const maxID = 99999;
+            return Math.floor(Math.random() * (maxID - minID + 1)) + minID;
+        }
+
+        function isClientIDUsed545(clientID) {
+            return usedClientIDs.includes(clientID);
+        }
+
+        // Function to fetch parts data and update the HTML
+        function fetchAndDisplayParts545() {
+            // Make an HTTP GET request to your /get-parts endpoint
+            fetch('/get-parts')
+                .then((response) => response.json())
+                .then((data) => {
+                    const partDropdown = document.getElementById('part-dropdown');
+
+                    // Clear existing options in the dropdown
+                    partDropdown.innerHTML = '<option value="">Select a Part</option>';
+
+                    // Populate the dropdown with parts data
+                    data.forEach((part) => {
+                        const option = document.createElement('option');
+                        option.value = part.partNo545;
+                        option.textContent = `${part.partName545} - $${part.currentPrice545}`;
+                        partDropdown.appendChild(option);
+                    });
+                })
+                .catch((error) => console.error('Error fetching data:', error));
+        }
+        
+       
+        
+    </script>
+</body>
+</html>

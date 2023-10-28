@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSCI 4140 Parts Store</title>
+    <link rel="stylesheet" href="Styles/POStyles.css"> 
+</head>
+<body>
+    <header>
+        <h1>CSCI 4140 Parts Store</h1>
+        <nav class="navbar">
+          <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="parts.html">Part Information</a></li>
+              <li><a href="PO.html">PO Information</a></li>
+              <li><a href="lineInfo.html">Line Info</a></li>
+              <li><a href ="submitPO.html">Submit a Purchase Order</a></li>
+          </ul>
+      </nav>
+        <h2>Purchase Orders:</h2>
+        
+        <!-- Add a div to display the part information -->
+        <div id="purchase-orders-list"></div>
+    </header>
+    <script>
+ // Function to fetch and display purchase orders data
+function fetchAndDisplayPurchaseOrders545() {
+  // Make an HTTP GET request to your /pos endpoint
+  fetch('/pos')
+    .then((response) => response.json())
+    .then((data) => {
+      const purchaseOrdersList = document.getElementById('purchase-orders-list');
+
+      // Create an HTML table to display the purchase orders data
+      const table = document.createElement('table');
+      table.classList.add('purchase-orders-table');
+
+      // Create table headers
+      const headers = ['Purchase Order Number', 'Client ID', 'Date', 'Total Amount'];
+      const headerRow = document.createElement('tr');
+      headers.forEach((headerText) => {
+        const headerCell = document.createElement('th');
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
+      });
+      table.appendChild(headerRow);
+      console.log(data); // Add this line to inspect the data
+      // Create table rows for each purchase order
+        // Create table rows for each purchase order
+        for (let i = 0; i < data.length; i++) {
+          const po = data[i];
+          const row = document.createElement('tr');
+          
+          for (const key in po) {
+            if (po.hasOwnProperty(key)) {
+              const cell = document.createElement('td');
+              if (key === 'dateOfPO545') { // Replace 'dateOfPO545' with the actual date property name
+                cell.textContent = new Date(po[key]).toLocaleDateString();
+              } else {
+                cell.textContent = po[key];
+              }
+              row.appendChild(cell);
+            }
+          }
+          table.appendChild(row);
+        }
+
+      // Append the table to the purchase-orders-list div
+      purchaseOrdersList.appendChild(table);
+    })
+    .catch((error) => console.error('Error fetching purchase orders data:', error));
+}
+
+// Call the function to fetch and display purchase orders data
+fetchAndDisplayPurchaseOrders545();
+
+
+
+    </script>
+</body>
+</html>

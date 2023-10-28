@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSCI 4140 Parts Store</title>
+    <link rel="stylesheet" href="Styles/partStyles.css"> 
+</head>
+<body>
+    <header>
+        <h1>CSCI 4140 Parts Store</h1>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="parts.html">Part Information</a></li>
+                <li><a href="PO.html">PO Information</a></li>
+                <li><a href="lineInfo.html">Line Info</a></li>
+                <li><a href ="submitPO.html">Submit a Purchase Order</a></li>
+            </ul>
+        </nav>
+        <h2>Enter a Part Number to see more Information</h2>
+        
+        <!-- Add this input field to your HTML form -->
+        <label for="part-number">Enter Part Number:</label>
+        <input type="text" id="part-number" name="part-number">
+        <button id="get-part-info">Get Part Info</button>
+
+        <!-- Add a div to display the part information -->
+        <div id="part-info"></div>
+    </header>
+
+  
+    
+    <script>
+    // Function to fetch and display part information
+function fetchPartInfo545() {
+  const partNumberInput = document.getElementById('part-number');
+  const partInfoDiv = document.getElementById('part-info');
+
+  const partNumber = partNumberInput.value;
+
+  if (!partNumber) {
+    partInfoDiv.innerHTML = 'Please enter a part number.';
+    return;
+  }
+
+  // Make an HTTP GET request to your server to fetch part info by part number
+  fetch(`/parts/${partNumber}`)
+    .then((response) => response.json())
+    .then((data) => {
+      // Clear any previous information
+      partInfoDiv.innerHTML = '';
+
+      if (data.error) {
+        partInfoDiv.innerHTML = data.error;
+      } else {
+        // Display the part information
+        partInfoDiv.innerHTML = `Part Number: ${data.partNo545}<br>Name: ${data.partName545}<br>Price: ${data.currentPrice545}<br>Quantity left: ${data.qoh545}`;
+      }
+    })
+    .catch((error) => console.error('Error fetching part info:', error));
+}
+
+// Add an event listener to the button to fetch and display part info
+const getPartInfoButton = document.getElementById('get-part-info');
+getPartInfoButton.addEventListener('click', fetchPartInfo545);
+
+    </script>
+</body>
+</html>

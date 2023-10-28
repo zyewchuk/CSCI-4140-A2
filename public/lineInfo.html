@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSCI 4140 Parts Store</title>
+    <link rel="stylesheet" href="Styles/lineStyles.css"> 
+</head>
+<body>
+    <h1>CSCI 4140 Parts Store</h1>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="parts.html">Part Information</a></li>
+            <li><a href="PO.html">PO Information</a></li>
+            <li><a href="lineInfo.html">Line Info</a></li>
+            <li><a href ="submitPO.html">Submit a Purchase Order</a></li>
+        </ul>
+    </nav>
+    <h2>Fetch Line Information</h2>
+    <form id="po-form">
+        <label for="po-number">Enter PO Number:</label>
+        <input type="text" id="po-number" name="po-number">
+        <button type="button" id="fetch-lines">Fetch Line Information</button>
+    </form>
+
+    <div id="line-info"> </div>
+
+    <script>
+        // Function to fetch and display line information
+        function fetchLineInfo545() {
+            const poNumberInput = document.getElementById('po-number');
+            const lineInfoDiv = document.getElementById('line-info');
+            const poNumber = poNumberInput.value;
+
+            if (!poNumber) {
+                lineInfoDiv.innerHTML = 'Please enter a PO number.';
+                return;
+            }
+
+            // Make an HTTP GET request to fetch line information by PO number
+            fetch(`/lines/${poNumber}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    // Clear any previous information
+                    lineInfoDiv.innerHTML = '';
+
+                    if (data.error) {
+                        lineInfoDiv.innerHTML = data.error;
+                    } else {
+                        // Create a table to display the line information
+                        const table = document.createElement('table');
+                        table.classList.add('lines-table');
+
+                        // Create table headers
+                        const headers = ['PO Number','Line Number', 'Part Number', 'Quantity Ordered','Price ordered'];
+                        const headerRow = document.createElement('tr');
+                        headers.forEach((headerText) => {
+                            const headerCell = document.createElement('th');
+                            headerCell.textContent = headerText;
+                            headerRow.appendChild(headerCell);
+                        });
+                        table.appendChild(headerRow);
+
+                        // Create table rows for each line
+                        data.forEach((line) => {
+                            const row = document.createElement('tr');
+                            for (const key in line) {
+                                if (line.hasOwnProperty(key)) {
+                                    const cell = document.createElement('td');
+                                    cell.textContent = line[key];
+                                    row.appendChild(cell);
+                                }
+                            }
+                            table.appendChild(row);
+                        });
+
+                        // Append the table to the line-info div
+                        lineInfoDiv.appendChild(table);
+                    }
+                })
+                .catch((error) => console.error('Error fetching line info:', error));
+        }
+
+        // Add an event listener to the button to fetch and display line info
+        const fetchLinesButton = document.getElementById('fetch-lines');
+        fetchLinesButton.addEventListener('click', fetchLineInfo545);
+    </script>
+</body>
+</html>

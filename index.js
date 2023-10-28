@@ -8,10 +8,10 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 const db = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root', // Replace with your MySQL username
-  password: '000998310', // Replace with your MySQL password
-  database: 'Assignment2',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 db.connect((err) => {

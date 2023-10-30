@@ -40,7 +40,7 @@ app.get('/parts', (req, res) => {
 app.get('/parts/:partNumber', (req, res) => {
   const partNumber = req.params.partNumber;
   
-  db.query('SELECT * FROM parts545 WHERE partNo545 = ?', [partNumber], (err, results) => {
+  db.query('SELECT * FROM Parts545 WHERE partNo545 = ?', [partNumber], (err, results) => {
     if (err) {
       console.error('Error querying the database:', err);
       res.status(500).json({ error: 'Internal server error' });

@@ -1,4 +1,3 @@
-//require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2');
 
@@ -6,7 +5,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-
+// Connection to the database
 const db = mysql.createConnection({
   host: "34.152.32.209",
   user: "root",
@@ -25,7 +24,7 @@ db.connect((err) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
+// Endpoint to Fetch and displays the list of available parts from the Parts545 table
 app.get('/parts', (req, res) => {
   db.query('SELECT * FROM Parts545', (err, results) => {
     if (err) {
@@ -36,7 +35,7 @@ app.get('/parts', (req, res) => {
     }
   });
 });
-
+// endpoint to have the user enter in a partNo545 then display only the info for the part number the user enters 
 app.get('/parts/:partNumber', (req, res) => {
   const partNumber = req.params.partNumber;
   
@@ -51,7 +50,7 @@ app.get('/parts/:partNumber', (req, res) => {
     }
   });
 });
-
+// endpoint to display the information that is displayed in the POs545 table
 app.get('/pos', (req, res) => {
   db.query('SELECT * FROM POs545', (err, results) => {
     if (err) {
@@ -62,7 +61,7 @@ app.get('/pos', (req, res) => {
     }
   });
 });
-
+// Display line information given a PoNo545
 app.get('/lines/:poNumber', (req, res) => {
   const poNumber = req.params.poNumber;
 
@@ -77,7 +76,7 @@ app.get('/lines/:poNumber', (req, res) => {
     }
   });
 });
-
+//This endpoint is used in the SubmitPO.html to display the availible parts for the dropdown menu 
 app.get('/get-parts', (req, res) => {
   db.query('SELECT partNo545, partName545, currentPrice545, qoh545 FROM Parts545', (err, results) => {
     if (err) {
@@ -88,7 +87,7 @@ app.get('/get-parts', (req, res) => {
     }
   });
 });
-
+// This endpoint is used to handle the process of adding a part to the cart based on what the user clicks
 app.get('/add-to-cart', (req, res) => {
   const selectedPartNo = req.query.partNo;
 
@@ -110,7 +109,7 @@ app.get('/add-to-cart', (req, res) => {
     }
   });
 });
-
+// endpoint to fetch how many purchase orders that there have been, increment by one to display the current Po number which is being made
 app.get('/next-po-number', (req, res) => {
   db.query('SELECT MAX(poNo545) AS maxPoNumber FROM POs545', (err, results) => {
     if (err) {
@@ -123,7 +122,7 @@ app.get('/next-po-number', (req, res) => {
     }
   });
 });
-
+// this endpont is made to insert data into the Clients545 table with all parameters.
 app.post('/insert-client-data', (req, res) => {
   const { clientId545, clientName545, clientCity545, moneyOwed545 } = req.body;
 
@@ -139,7 +138,7 @@ app.post('/insert-client-data', (req, res) => {
     }
   });
 });
-
+// this endpont is made to insert data into the POs545 table with all parameters.
 app.post('/insert-PO-data', (req, res) => {
   const { poNo545, clientCompID545, dateOfPO545, status545 } = req.body;
 
@@ -155,7 +154,7 @@ app.post('/insert-PO-data', (req, res) => {
     }
   });
 });
-
+// this endpont is made to insert data into the Lines545table with all parameters.
 app.post('/insert-line-data', (req, res) => {
   const { poNo545, lineNo545, partNo545, qty545, priceOrdered545 } = req.body;
 

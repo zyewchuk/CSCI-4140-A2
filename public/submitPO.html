@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Client Information Form</title>
+    <title>CSCI 4140 Parts Store</title>
     <link rel="stylesheet" href="Styles/submitPOStyles.css"> 
 </head>
 <body>
-    <h1>Client Information Form</h1>
+    <h1>CSCI 4140 Parts Store</h1>
+    <h2> Submit a Purchase Order</h2>
     <nav class="navbar">
         <ul>
             <li><a href="index.html">Home</a></li>
@@ -15,6 +16,7 @@
             <li><a href="submitPO.html">Submit a Purchase Order</a></li>
         </ul>
     </nav>
+    <!-- Input form -->
     <form id="client-form">
         <label for="clientName">Client Name:</label>
         <input type="text" id="clientName" required><br><br>
@@ -24,7 +26,7 @@
 
         <input type="button" value="Submit" onclick="generateClientID545()">
     </form>
-
+    <!-- Purchase order information -->
     <div id="purchase-order-info" style="display: none;">
         <h3>Purchase Order Information:</h3>
         <p>Your Purchase Order Number: <span id="nextPoNumber"></span></p>
@@ -34,7 +36,7 @@
         <button id="add-products-button" onclick="addProducts()">Add Products</button>
         <button id="cancel-button" onclick="refreshPage545()">Cancel</button>
     </div>
-
+    <!-- Partslist for dropdown-->
     <div id="parts-list" style="display: none;">
         <select id="part-dropdown">
             <option value="">Select a Part</option>
@@ -43,14 +45,14 @@
         <input type="number" id="quantity" placeholder="Quantity">
         <button type="button" id="add-to-cart">Add to Cart</button>
     </div>
-
+    <!-- Cart -->
     <h3>Shopping Cart:</h3>
     <ul id="cart"></ul>
 
     <h3>Total Price: <span id="total-price">$0.00</span></h3>
     <button type="button" id="purchase-button">Purchase</button>
     <script>
-
+        // Getting next availible PO number
         function fetchNextPoNumber545() {
             fetch('/next-po-number')
                 .then(response => response.json())
@@ -66,7 +68,7 @@
             const partsList = document.getElementById("parts-list");
             partsList.style.display = "block";
         }
-
+        // When the user presses cancel button it refreshes page
         function refreshPage545() {
             window.location.reload();
         }
@@ -109,12 +111,8 @@
 
             fetchNextPoNumber545(); 
             let lineNo545 = 1; // Initialize with 1, increment as new lines are added
-            // Function to add selected part to the cart
-
-            // Add an event listener to the "Purchase" button
-    
-
             
+            // Info to be added to Client545 table
             const clientId545 = clientID;
             const clientName545 = clientName
             const clientCity545 = clientCity
@@ -178,7 +176,7 @@
                        
             });
             
-            
+            // Info to be added to POs545 table
                 const POData = {
                             poNo545,
                             clientCompID545,
@@ -186,17 +184,17 @@
                             status545,
                         };
                         console.log(POData);
+                // function to add parts to the cart
+                function addToCart545() {
+            const partDropdown = document.getElementById('part-dropdown');
+            const quantityInput = document.getElementById('quantity');
+            const selectedPartNo = partDropdown.value;
+            const quantity = quantityInput.valueAsNumber;
 
-           function addToCart545() {
-    const partDropdown = document.getElementById('part-dropdown');
-    const quantityInput = document.getElementById('quantity');
-    const selectedPartNo = partDropdown.value;
-    const quantity = quantityInput.valueAsNumber;
-
-    if (!selectedPartNo || quantity <= 0) {
-        alert('Please select a part and enter a valid quantity.');
-        return;
-    }
+            if (!selectedPartNo || quantity <= 0) {
+                alert('Please select a part and enter a valid quantity.');
+                return;
+            }
    
     // Make an HTTP GET request to retrieve the price for the selected part
     fetch(`/add-to-cart?partNo=${selectedPartNo}`)
@@ -222,18 +220,9 @@
 
                 // Now, you can calculate priceOrdered545
                 const priceOrdered545 = itemPrice * quantity;
-
-                // Call the fetchNextPoNumber function when the page loads
-                //window.addEventListener('load', fetchNextPoNumber);
-
-                
                 //const poNo545 = document.getElementById('nextPoNumber').textContent;
                 const partNo545 = selectedPartNo;
                 const qty545 = quantity;
-
-
-                
-                        
                 // Insert the prepared data into the Lines545 table (You will make a server request here)
                 const lineData = {
                     poNo545,
@@ -258,7 +247,7 @@
                         })
                         .catch((error) => console.error('Error inserting data:', error));
                 }
-                        // Call the function to insert data into the Lines545 table
+                        
               //  insertLineData(lineData);
                     console.log(lineData);
                 // Increment the line number for the next line

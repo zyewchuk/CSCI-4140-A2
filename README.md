@@ -3,7 +3,7 @@
 
 
 * *Date Created*: 12 10 2023
-* *Last Modification Date*: 30 10 2023
+* *Last Modification Date*: 28 10 2023
 * *Git URL*: https://github.com/zyewchuk/CSCI-4140-A2.git;
 
 
@@ -11,23 +11,16 @@
 
 
 ### Installing
+ 
+ - Navigate in terminal where you would like to clone the repository
 
-A step by step series of examples that tell you how to get a development env running
+ - Clone the repo by the following command : git clone https://github.com/zyewchuk/CSCI-4140-A2.git
 
-Say what the step will be, assume the marker just acquired a computer
+ - Install Node.js onto your computer using https://nodejs.org/en
 
-```
-Give the example
-```
+ - Type in the command "node index.js"
 
-And repeat
+ - In your favourite browser, go to http://localhost:3000/
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo. You may also include a quick example of what the marker should see if the installation of all required software / libraries / plug-ins was successful.
-
-```
-
-
+Feel free to reach out if you have any doubts 
+zk977238@dal.ca
